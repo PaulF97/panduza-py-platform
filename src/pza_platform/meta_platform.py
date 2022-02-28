@@ -5,21 +5,19 @@ import argparse
 import threading
 import importlib
 from loguru import logger
-from broker import Broker
+from .broker import Broker
+from sys import platform
 
-"""
-"""
+
 class MetaPlatform:
-    """
-    Main class to manage the server
+    """ Main class to manage the server
     """
 
     ###########################################################################
     ###########################################################################
 
-    def __init__(self) -> None:
-        """
-        Constructor
+    def __init__(self):
+        """ Constructor
         """
 
         # Threads
@@ -38,21 +36,26 @@ class MetaPlatform:
     def __parse_args(self):
         """
         """
-    
         # Manage arguments
         parser = argparse.ArgumentParser(description='Manage Panduza Server')
-        parser.add_argument('-t', '--tree', help='path to the panduza tree (*.json)', required=True, metavar="FILE")
+        parser.add_argument('-t', '--tree', help='path to the panduza tree (*.json)', metavar="FILE")
         parser.add_argument('-l', '--log', dest='enable_logs', action='store_true', help='start the logs')
-        # parser.add_argument('-d', '--deamon', dest='start_deamon', action='store_true', help='start the plugin as a deamon')
         args = parser.parse_args()
 
         # Check if logs are enabled
         if not args.enable_logs:
             logger.remove()
 
+        # Check tree filepath value
+        tree_filepath = args.tree
+        if not args.tree:            
+            # Set the default tree path on linux
+            if platform == "linux" or platform == "linux2":
+                tree_filepath = "/etc/panduza/tree.json"
+
         # Load tree
         self.tree = {}
-        with open(args.tree) as tree_file:
+        with open(tree_filepath) as tree_file:
             self.tree = json.load(tree_file)
 
 
@@ -196,20 +199,8 @@ class MetaPlatform:
     ###########################################################################
 
     def run(self):
+        """Run the server
         """
-        Run the server
-        """
-
-
-        # # Check if it must start as deamon
-        # if args.start_deamon:
-        #     with daemon.DaemonContext():
-        #         main(cfg)
-
-        # # Standart run
-        # else:
-        #     main(cfg)
-
 
         try:
             # Manage args
