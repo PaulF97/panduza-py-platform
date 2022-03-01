@@ -23,13 +23,13 @@ class MetaDriver(metaclass=abc.ABCMeta):
     ###########################################################################
     ###########################################################################
 
-    def initialize(self, server, machine, broker, tree):
+    def initialize(self, platform, machine, broker, tree):
         """
         """
         #  \todo assert if info not present
         #  \todo assert if name not present
 
-        self.server = server
+        self.platform = platform
         self.machine = machine
         self.broker = broker
         self.tree = tree
@@ -187,7 +187,7 @@ class MetaDriver(metaclass=abc.ABCMeta):
     def get_interface_instance_from_name(self, name):
         """
         """
-        return self.server.get_interface_instance_from_name(name)
+        return self.platform.get_interface_instance_from_name(name)
 
     ###########################################################################
     ###########################################################################

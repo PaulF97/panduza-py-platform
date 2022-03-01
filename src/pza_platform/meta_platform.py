@@ -10,7 +10,7 @@ from sys import platform
 
 
 class MetaPlatform:
-    """ Main class to manage the server
+    """ Main class to manage the platform
     """
 
     ###########################################################################
@@ -37,7 +37,7 @@ class MetaPlatform:
         """
         """
         # Manage arguments
-        parser = argparse.ArgumentParser(description='Manage Panduza Server')
+        parser = argparse.ArgumentParser(description='Manage Panduza Platform')
         parser.add_argument('-t', '--tree', help='path to the panduza tree (*.json)', metavar="FILE")
         parser.add_argument('-l', '--log', dest='enable_logs', action='store_true', help='start the logs')
         args = parser.parse_args()
@@ -62,19 +62,21 @@ class MetaPlatform:
     ###########################################################################
     ###########################################################################
 
-    def __load_broker(self, machine, broker_name, broker_tree):
+    def __load_tree_broker(self, machine, broker_name, broker_tree):
+        """ Load interfaces declared in the tree for the given broker
         """
-        """
-        #
+        # Debug log
         logger.info(" + {} ({}:{})", broker_name, broker_tree["addr"], broker_tree["port"])
 
-        #
+        # Create broker object
         broker = Broker(broker_tree["addr"], broker_tree["port"])
 
-        #
+        # For each interface create it
         for interface in broker_tree["interfaces"]:
             self.__interpret_interface_declaration(machine, broker, interface)
 
+        # At last start a platform driver for this broker
+        self.__load_interface(machine, broker, { "name": "platform", "driver": "platform_py" })
 
     ###########################################################################
     ###########################################################################
@@ -112,6 +114,7 @@ class MetaPlatform:
         # Only one interface to start
         else:
             self.__load_interface(machine, broker, interface_declaration)
+
 
     ###########################################################################
     ###########################################################################
@@ -199,7 +202,7 @@ class MetaPlatform:
     ###########################################################################
 
     def run(self):
-        """Run the server
+        """Run the platform
         """
 
         try:
@@ -209,7 +212,7 @@ class MetaPlatform:
             # Parse configs
             logger.debug("load tree:{}", json.dumps(self.tree, indent=1))
             for broker in self.tree["brokers"]:
-                self.__load_broker(self.tree["machine"], broker, self.tree["brokers"][broker])
+                self.__load_tree_broker(self.tree["machine"], broker, self.tree["brokers"][broker])
 
             # Run all the interfaces
             for interface in self.interfaces:
@@ -233,7 +236,7 @@ class MetaPlatform:
 
     def stop(self):
         """
-        To stop the server
+        To stop the platform
         """
         # Request a stop for each driver
         for interface in self.interfaces:
