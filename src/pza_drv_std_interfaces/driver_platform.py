@@ -22,6 +22,14 @@ class DriverPlatform(MetaDriver):
     def setup(self, tree):
         """ From MetaDriver
         """
+        pass
+
+    ###########################################################################
+    ###########################################################################
+
+    def on_start(self):
+        """ From MetaDriver
+        """
         # Push the tree config
         self.push_attribute("tree", json.dumps(self.platform.tree), retain=True)
 

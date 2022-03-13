@@ -96,10 +96,10 @@ class MetaDriver(metaclass=abc.ABCMeta):
             self.mqtt_client.loop_start()
 
             #
-            self.setup(self.tree)
+            self.__load_commands()
 
             #
-            self.__load_commands()
+            self.on_start()
 
             # Main loop
             self.log.debug("Interface started...")
@@ -192,6 +192,14 @@ class MetaDriver(metaclass=abc.ABCMeta):
     ###########################################################################
     ###########################################################################
 
+    def initial_setup(self):
+        """To ease the interface initialisation
+        """
+        self.setup(self.tree)
+
+    ###########################################################################
+    ###########################################################################
+
     @abc.abstractmethod
     def config(self):
         """
@@ -203,6 +211,17 @@ class MetaDriver(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def setup(self, tree):
+        """Mono-threaded initialization of the interface
+
+        Warning mqtt client is not initialized at this step
+        """
+        pass
+
+    ###########################################################################
+    ###########################################################################
+
+    # @abc.abstractmethod
+    def on_start(self):
         """
         """
         pass

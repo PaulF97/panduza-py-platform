@@ -228,7 +228,11 @@ class MetaPlatform:
             for broker in self.tree["brokers"]:
                 self.__load_tree_broker(self.tree["machine"], broker, self.tree["brokers"][broker])
 
-            # Run all the interfaces
+            # Setup all the interfaces in the same thread
+            for interface in self.interfaces:
+                interface["instance"].initial_setup()
+
+            # Run all the interfaces on differents threads
             for interface in self.interfaces:
                 t = threading.Thread(target=interface["instance"].start)
                 self.threads.append(t)
