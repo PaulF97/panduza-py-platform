@@ -103,8 +103,23 @@ class MetaPlatform:
     ###########################################################################
 
     def __interpret_interface_declaration(self, machine, broker, interface_declaration):
+        """ Interpret option in the interface declaration
+
+        Options are
+        - disable: to prevent this interface from beeing loaded
+        - repeated: to execute the interface loading multiple times
         """
-        """
+        # Check if the interface is disabled by the user
+        if "disable" in interface_declaration and interface_declaration["disable"] == True:
+            name = "?"
+            if "name" in interface_declaration:
+                name = interface_declaration["name"]
+            driver_name = "?"
+            if "driver" in interface_declaration:
+                driver_name = interface_declaration["driver"]
+            logger.warning("> {} [{}] interface disabled", name, driver_name)
+            return
+
         # Multiple interfaces, need to create one interface for each
         if "repeated" in interface_declaration:
             for param in interface_declaration["repeated"]:
@@ -114,7 +129,6 @@ class MetaPlatform:
         # Only one interface to start
         else:
             self.__load_interface(machine, broker, interface_declaration)
-
 
     ###########################################################################
     ###########################################################################
