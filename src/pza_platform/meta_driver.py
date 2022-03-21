@@ -23,13 +23,13 @@ class MetaDriver(metaclass=abc.ABCMeta):
     ###########################################################################
     ###########################################################################
 
-    def initialize(self, server, machine, broker, tree):
+    def initialize(self, platform, machine, broker, tree):
         """
         """
         #  \todo assert if info not present
         #  \todo assert if name not present
 
-        self.server = server
+        self.platform = platform
         self.machine = machine
         self.broker = broker
         self.tree = tree
@@ -96,10 +96,10 @@ class MetaDriver(metaclass=abc.ABCMeta):
             self.mqtt_client.loop_start()
 
             #
-            self.setup(self.tree)
+            self.__load_commands()
 
             #
-            self.__load_commands()
+            self.on_start()
 
             # Main loop
             self.log.debug("Interface started...")
@@ -187,7 +187,15 @@ class MetaDriver(metaclass=abc.ABCMeta):
     def get_interface_instance_from_name(self, name):
         """
         """
-        return self.server.get_interface_instance_from_name(name)
+        return self.platform.get_interface_instance_from_name(name)
+
+    ###########################################################################
+    ###########################################################################
+
+    def initial_setup(self):
+        """To ease the interface initialisation
+        """
+        self.setup(self.tree)
 
     ###########################################################################
     ###########################################################################
@@ -203,6 +211,17 @@ class MetaDriver(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def setup(self, tree):
+        """Mono-threaded initialization of the interface
+
+        Warning mqtt client is not initialized at this step
+        """
+        pass
+
+    ###########################################################################
+    ###########################################################################
+
+    # @abc.abstractmethod
+    def on_start(self):
         """
         """
         pass

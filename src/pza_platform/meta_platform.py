@@ -10,7 +10,7 @@ from sys import platform
 
 
 class MetaPlatform:
-    """ Main class to manage the server
+    """ Main class to manage the platform
     """
 
     ###########################################################################
@@ -37,7 +37,7 @@ class MetaPlatform:
         """
         """
         # Manage arguments
-        parser = argparse.ArgumentParser(description='Manage Panduza Server')
+        parser = argparse.ArgumentParser(description='Manage Panduza Platform')
         parser.add_argument('-t', '--tree', help='path to the panduza tree (*.json)', metavar="FILE")
         parser.add_argument('-l', '--log', dest='enable_logs', action='store_true', help='start the logs')
         args = parser.parse_args()
@@ -62,19 +62,21 @@ class MetaPlatform:
     ###########################################################################
     ###########################################################################
 
-    def __load_broker(self, machine, broker_name, broker_tree):
+    def __load_tree_broker(self, machine, broker_name, broker_tree):
+        """ Load interfaces declared in the tree for the given broker
         """
-        """
-        #
+        # Debug log
         logger.info(" + {} ({}:{})", broker_name, broker_tree["addr"], broker_tree["port"])
 
-        #
+        # Create broker object
         broker = Broker(broker_tree["addr"], broker_tree["port"])
 
-        #
+        # For each interface create it
         for interface in broker_tree["interfaces"]:
             self.__interpret_interface_declaration(machine, broker, interface)
 
+        # At last start a platform driver for this broker
+        self.__load_interface(machine, broker, { "name": "platform", "driver": "platform_py" })
 
     ###########################################################################
     ###########################################################################
@@ -101,8 +103,23 @@ class MetaPlatform:
     ###########################################################################
 
     def __interpret_interface_declaration(self, machine, broker, interface_declaration):
+        """ Interpret option in the interface declaration
+
+        Options are
+        - disable: to prevent this interface from beeing loaded
+        - repeated: to execute the interface loading multiple times
         """
-        """
+        # Check if the interface is disabled by the user
+        if "disable" in interface_declaration and interface_declaration["disable"] == True:
+            name = "?"
+            if "name" in interface_declaration:
+                name = interface_declaration["name"]
+            driver_name = "?"
+            if "driver" in interface_declaration:
+                driver_name = interface_declaration["driver"]
+            logger.warning("> {} [{}] interface disabled", name, driver_name)
+            return
+
         # Multiple interfaces, need to create one interface for each
         if "repeated" in interface_declaration:
             for param in interface_declaration["repeated"]:
@@ -199,7 +216,7 @@ class MetaPlatform:
     ###########################################################################
 
     def run(self):
-        """Run the server
+        """Run the platform
         """
 
         try:
@@ -209,9 +226,13 @@ class MetaPlatform:
             # Parse configs
             logger.debug("load tree:{}", json.dumps(self.tree, indent=1))
             for broker in self.tree["brokers"]:
-                self.__load_broker(self.tree["machine"], broker, self.tree["brokers"][broker])
+                self.__load_tree_broker(self.tree["machine"], broker, self.tree["brokers"][broker])
 
-            # Run all the interfaces
+            # Setup all the interfaces in the same thread
+            for interface in self.interfaces:
+                interface["instance"].initial_setup()
+
+            # Run all the interfaces on differents threads
             for interface in self.interfaces:
                 t = threading.Thread(target=interface["instance"].start)
                 self.threads.append(t)
@@ -233,7 +254,7 @@ class MetaPlatform:
 
     def stop(self):
         """
-        To stop the server
+        To stop the platform
         """
         # Request a stop for each driver
         for interface in self.interfaces:
