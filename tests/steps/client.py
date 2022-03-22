@@ -1,7 +1,8 @@
 import os
+import time
 from behave import *
-from xdocz_helpers import AttachTextLog
-from panduza import Client
+from xdocz_helpers import AttachTextLog, PathToRsc
+from panduza import Core, Client
 
 ###############################################################################
 ###############################################################################
@@ -20,6 +21,21 @@ def step(context, url, port):
 ###############################################################################
 ###############################################################################
 
+@Given('aliases from the file:"{file}"')
+def step(context, file):
+    filepath = PathToRsc(file)
+    Core.LoadAliases(filepath=filepath)
+
+###############################################################################
+###############################################################################
+
+@Given('a client created with the mqtt test broker alias:"{alias}"')
+def step(context, alias):
+    context.pzaconn = Client(alias=alias)
+
+###############################################################################
+###############################################################################
+
 @When('the client start the connection')
 def step(context):
     context.pzaconn.connect()
@@ -29,5 +45,9 @@ def step(context):
 
 @Then('the client is connected')
 def step(context):
+    time.sleep(0.5)    
     assert context.pzaconn.is_connected == True
+
+
+
 
