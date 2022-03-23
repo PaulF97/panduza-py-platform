@@ -8,14 +8,14 @@ LONG_DESCRIPTION = 'The Panduza '
 
 
 class CustomInstallCommand(install):
-  def run(self):
-    install.run(self)
+    def run(self):
+        install.run(self)
 
 
 # Setting up
 setup(
     # the name must match the folder name 'verysimplemodule'
-    name="pza_platform", 
+    name="pza_platform",
     version=VERSION,
     author="Panduza Team",
     author_email="panduza.team@gmail.com",
@@ -23,7 +23,7 @@ setup(
     long_description=LONG_DESCRIPTION,
     packages=find_packages(),
     cmdclass={'install': CustomInstallCommand},
-    
+
     install_requires=['loguru', 'paho-mqtt'],
 
     # package_data={
@@ -35,15 +35,14 @@ setup(
     #     ]
     # },
 
-    entry_points = {
+    entry_points={
         'console_scripts': [
-            'pza-py-platform-service-install=pza_platform.scripts.console:install_service',
             'pza-py-platform-run=pza_platform.scripts.console:run_platform'
-            ],
+        ],
     },
 
-    keywords=['python', 'first package'],
-    classifiers= [
+    # keywords=['python', 'first package'],
+    classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Education",
         "Programming Language :: Python :: 2",
@@ -52,5 +51,3 @@ setup(
         "Operating System :: Microsoft :: Windows",
     ]
 )
-
-

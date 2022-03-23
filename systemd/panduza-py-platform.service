@@ -3,10 +3,7 @@ Description=Platform Python to support Panduza Meta Drivers
 After=network.target
 
 [Service]
-Environment=PYTHONPATH=/home/pi/panduza-py-quick-server/src:$PYTHONPATH
-ExecStart=/usr/bin/python3 /home/pi/panduza-py-quick-server/src/pza_quick_server -l
-
+ExecStart=pza-py-platform-run
 
 [Install]
 WantedBy=multi-user.target
-
