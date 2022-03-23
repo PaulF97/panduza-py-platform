@@ -3,8 +3,7 @@
         "url": "localhost",
         "port": 1883,
         "interfaces": {
-            "foo1": "/topic/to/foo1",
-            "foo2": "/topic/to/foo2"
+            "tpl": "pza/test_platform/platform_py/platform"
         }
     }
 }

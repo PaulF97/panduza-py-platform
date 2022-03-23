@@ -20,4 +20,8 @@ Feature: Client
         | file                      | alias                 |
         | aliases_test_01.json      | local_test            |
 
+    Scenario: A client must be able to scan interfaces
+        Given a client connected to the default mqtt test broker
+        When the client scan the interfaces
+        Then at least a platform interface must be found
 

@@ -1,10 +1,15 @@
 Feature: Platform
 
 
-# connect to a broker
-
     # Scenario: Platform must provide current machine tree
-    #     Given we are in a directory
-    #     Then the LICENSE file exists
+    #     Given a the connected test platform interface
+
+
+    # Scenario: Platform must provide the current machine tree
+    #     Given the alias file "aliases_test_01.json" loaded
+    #     And the platform interface with alias "tpl" is connected
+
+
+
 
 
