@@ -28,7 +28,9 @@ class MetaPlatform:
     
         # Interfaces
         self.interfaces = []
-
+        
+        #
+        self.force_log = False
 
     ###########################################################################
     ###########################################################################
@@ -43,7 +45,7 @@ class MetaPlatform:
         args = parser.parse_args()
 
         # Check if logs are enabled
-        if not args.enable_logs:
+        if not args.enable_logs and self.force_log != True:
             logger.remove()
 
         # Check tree filepath value

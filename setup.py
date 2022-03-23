@@ -1,5 +1,3 @@
-import os
-import glob
 from setuptools import setup, find_packages
 from setuptools.command.install import install
 
@@ -10,14 +8,8 @@ LONG_DESCRIPTION = 'The Panduza '
 
 
 class CustomInstallCommand(install):
-    
   def run(self):
     install.run(self)
-    current_dir_path = os.path.dirname(os.path.realpath(__file__))
-    print(">>>>>>>>>>>>>>><", current_dir_path)
-    
-    # create_service_script_path = os.path.join(current_dir_path, 'super_project', 'install_scripts', 'create_service.sh')
-    # subprocess.check_output([create_service_script_path])
 
 
 # Setting up
@@ -32,7 +24,7 @@ setup(
     packages=find_packages(),
     cmdclass={'install': CustomInstallCommand},
     
-    # install_requires=['django', 'djangorestframework', 'django-cors-headers'],
+    install_requires=['loguru', 'paho-mqtt'],
 
     # package_data={
     #     'panduza_server': [
@@ -43,9 +35,12 @@ setup(
     #     ]
     # },
 
-    # entry_points = {
-    #     'console_scripts': ['pza-run-server=panduza_server.scripts.server:run_server'],
-    # },
+    entry_points = {
+        'console_scripts': [
+            'pza-py-platform-service-install=pza_platform.scripts.console:install_service',
+            'pza-py-platform-run=pza_platform.scripts.console:run_platform'
+            ],
+    },
 
     keywords=['python', 'first package'],
     classifiers= [
