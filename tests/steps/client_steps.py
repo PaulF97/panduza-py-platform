@@ -61,5 +61,27 @@ def step(context):
     assert found_platform == True
 
 
+###############################################################################
+###############################################################################
+
+@When('the client "{client_name}" subscribe to topic "{topic}"')
+def step(context, client_name, topic):
+    
+    def fff(topic, payload, context):
+        context.rx_data = payload
+        # print(">>>", context.rx_data, "\n")
         
-        
+    context.rx_data = None
+    context.clients[client_name].subscribe(topic, fff, context=context)
+    time.sleep(0.5)
+
+###############################################################################
+###############################################################################
+
+@When('the client "{client_name}" send "{data}" in topic "{topic}"')
+def step(context, client_name, data, topic):
+    context.clients[client_name].publish(topic, data)    
+    time.sleep(0.5)
+    AttachTextLog(context, f"data rx: {context.rx_data} vs {data}")
+    assert context.rx_data.decode() == data
+
