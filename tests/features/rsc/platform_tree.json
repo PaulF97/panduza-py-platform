@@ -1,5 +1,5 @@
 {
-    "machine": "test_platform",
+    "machine": "test_io",
     "brokers": {
         "test_broker": {
             "addr": "localhost",

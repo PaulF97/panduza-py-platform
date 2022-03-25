@@ -1,5 +1,6 @@
 from behave import *
 from xdocz_helpers import AttachTextLog, PathToRsc
+from panduza import Core
 
 ###############################################################################
 ###############################################################################
@@ -10,8 +11,7 @@ use_step_matcher("parse")
 ###############################################################################
 ###############################################################################
 
-@Given('the alias file "{filepath}" loaded')
+@Given('core aliases loaded with file "{filepath}"')
 def step(context, filepath):
-    # context.current_test_client = Client(url=url, port=int(port))
-    AttachTextLog(context, f"Client created with url:'{filepath}'")
+    Core.LoadAliases(filepath=PathToRsc(filepath))
 

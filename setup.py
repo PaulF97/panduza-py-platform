@@ -15,7 +15,7 @@ class CustomInstallCommand(install):
 # Setting up
 setup(
     # the name must match the folder name 'verysimplemodule'
-    name="pza_platform",
+    name="panduza_platform",
     version=VERSION,
     author="Panduza Team",
     author_email="panduza.team@gmail.com",
@@ -24,22 +24,7 @@ setup(
     packages=find_packages(),
     cmdclass={'install': CustomInstallCommand},
 
-    install_requires=['loguru', 'paho-mqtt'],
-
-    # package_data={
-    #     'panduza_server': [
-    #         'static/css/*.css',
-    #         'static/img/*.png',
-    #         'static/js/*.js',
-    #         'templates/*.html'
-    #     ]
-    # },
-
-    entry_points={
-        'console_scripts': [
-            'pza-py-platform-run=pza_platform.scripts.console:run_platform'
-        ],
-    },
+    install_requires=['loguru', 'paho-mqtt', 'pyserial'],
 
     # keywords=['python', 'first package'],
     classifiers=[

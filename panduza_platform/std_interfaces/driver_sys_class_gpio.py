@@ -1,6 +1,6 @@
 import time
 from loguru import logger
-from pza_platform import MetaDriverIo
+from ..meta_driver_io import MetaDriverIo
 
 class DriverSysClassGpio(MetaDriverIo):
     """ Driver to manage io managed through linux /sys/class/gpio

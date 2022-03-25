@@ -5,8 +5,11 @@ import argparse
 import threading
 import importlib
 from loguru import logger
-from .broker import Broker
 from sys import platform
+
+
+from .broker import Broker
+from .std_interfaces import PZA_DRIVERS_LIST as COMMON_META_DRIVERS
 
 
 class MetaPlatform:
@@ -193,6 +196,10 @@ class MetaPlatform:
             for drv in plugin_package.PZA_DRIVERS_LIST:
                 self.register_driver(drv)
 
+        #
+        for drv in COMMON_META_DRIVERS:
+            self.register_driver(drv)
+
 
     ###########################################################################
     ###########################################################################
@@ -242,7 +249,10 @@ class MetaPlatform:
             # Start all the threads
             for thread in self.threads:
                 thread.start()
-                
+            
+            # Log
+            logger.info("Platform started !")
+
             # Join them all !
             for thread in self.threads:
                 thread.join()

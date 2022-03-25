@@ -1,8 +1,10 @@
 # Panduza Python Platform Tests
 
-To run those test you need:
+## Environment
 
-- MQTT broker without any security activated on localhost:1883
+To run those tests you need:
+
+- One MQTT broker without any security activated on localhost:1883
 
 
 ## Dependencies

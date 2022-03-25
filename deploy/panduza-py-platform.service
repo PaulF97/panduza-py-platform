@@ -3,7 +3,8 @@ Description=Platform Python to support Panduza Meta Drivers
 After=network.target
 
 [Service]
-ExecStart=pza-py-platform-run
+User=root
+ExecStart=/usr/bin/python3 /usr/local/bin/pza-py-platform-run.py
 
 [Install]
 WantedBy=multi-user.target
