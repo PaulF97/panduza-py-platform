@@ -14,16 +14,13 @@
                 },
                 {
                     "name": "io_in",
-                    "driver": "fake_io",
-                    "settings": {
-                        
-                    }
+                    "driver": "fake_io"
                 },
                 {
                     "name": "io_out",
                     "driver": "fake_io",
                     "settings": {
-                        
+                        "loopback": "io_in"
                     }
                 }
             ]

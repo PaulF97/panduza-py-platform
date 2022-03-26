@@ -14,7 +14,8 @@ class DriverFakeIo(MetaDriverIo):
             "compatible": "fake_io",
             "info": { "type": "io", "version": "1.0" },
             "settings": {
-                "behaviour": { "type": "str", "desc": "fake behaviour of the io [static|auto_toggle]" }
+                "behaviour": { "type": "str", "desc": "fake behaviour of the io [static|auto_toggle]" },
+                "loopback": { "type": "str", "desc": "to internaly loopback the value to an other fake_io interface" }
             }
         }
     
@@ -29,6 +30,7 @@ class DriverFakeIo(MetaDriverIo):
         self.value=0
         self.behaviour="static"
         self.__loop = 0
+        self.loopback = None
 
         # Configure the fake behaviour
         # Static by default => just wait for commands
@@ -40,6 +42,11 @@ class DriverFakeIo(MetaDriverIo):
                     self.behaviour = target_behaviour
                 else:
                     logger.error("unknown behaviour '{}' fallback to 'static'", target_behaviour)
+
+            #
+            if "loopback" in settings:
+                self.loopback = self.get_interface_instance_from_name(settings["loopback"])
+                logger.info(f"loopback enabled : {self.loopback}")
 
         # Register commands
         self.register_command("value/set", self.__value_set)
@@ -68,6 +75,15 @@ class DriverFakeIo(MetaDriverIo):
         else:
             return False
 
+
+    ###########################################################################
+    ###########################################################################
+
+    def force_value_set(self, value):
+        # Update value
+        self.value=value
+        self.push_io_value(self.value)
+
     ###########################################################################
     ###########################################################################
 
@@ -80,6 +96,9 @@ class DriverFakeIo(MetaDriverIo):
         # Update value
         self.value=req_value
         self.push_io_value(self.value)
+        #
+        if self.loopback:
+            self.loopback.force_value_set(self.value)
         # log
         logger.info(f"new value : {self.value}")
 

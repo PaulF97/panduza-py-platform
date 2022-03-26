@@ -19,8 +19,8 @@ Feature: Io
         And  io interface "out" initialized with alias "io_out"
         When io interface "in" direction is set to "in"
         And  io interface "out" direction is set to "out"
-        And  io interface "out" value is set to "1"
+        When io interface "out" value is set to "1"
         Then io interface "in" value is "1"
-        And  io interface "out" value is set to "0"
+        When io interface "out" value is set to "0"
         Then io interface "in" value is "0"
 

@@ -32,5 +32,17 @@ def step(context, io_name, direction):
 def step(context, io_name, direction):
     assert_that(context.interfaces["io"][io_name].direction.get(), equal_to(direction))
 
+###############################################################################
+###############################################################################
 
+@When('io interface "{io_name}" value is set to "{value}"')
+def step(context, io_name, value):
+    context.interfaces["io"][io_name].value.set(int(value), ensure=True)
+
+###############################################################################
+###############################################################################
+
+@Then('io interface "{io_name}" value is "{value}"')
+def step(context, io_name, value):
+    assert_that(context.interfaces["io"][io_name].value.get(), equal_to(int(value)))
 
