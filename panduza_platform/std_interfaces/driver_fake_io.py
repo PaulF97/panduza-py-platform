@@ -43,7 +43,6 @@ class DriverFakeIo(MetaDriverIo):
 
         # Register commands
         self.register_command("value/set", self.__value_set)
-        self.register_command("value/get", self.__value_get)
         self.register_command("direction/set", self.__direction_set)
 
     ###########################################################################
@@ -73,22 +72,6 @@ class DriverFakeIo(MetaDriverIo):
     ###########################################################################
 
     def __value_set(self, payload):
-        """ Apply set value request
-        """
-        # Parse request
-        req = self.payload_to_dict(payload)
-        req_value = req["value"]
-        # Update value
-        self.value=req_value
-        self.push_io_value(self.value)
-        # log
-        logger.info(f"new value : {self.value}")
-
-
-    ###########################################################################
-    ###########################################################################
-
-    def __value_get(self, payload):
         """ Apply set value request
         """
         # Parse request

@@ -6,7 +6,6 @@ To run those tests you need:
 
 - One MQTT broker without any security activated on localhost:1883
 
-
 ## Dependencies
 
 ```bash
@@ -14,6 +13,8 @@ To run those tests you need:
 pip install git+https://github.com/behave/behave
 # Install the html formater, for your bosses :-)
 pip install behave-html-formatter
+# Top Asserts !
+pip install PyHamcrest
 ```
 
 ## Just run behave
