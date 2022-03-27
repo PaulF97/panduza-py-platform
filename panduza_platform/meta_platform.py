@@ -182,7 +182,7 @@ class MetaPlatform:
             name: importlib.import_module(name)
             for finder, name, ispkg
             in pkgutil.iter_modules()
-            if name.startswith("pza_drv")
+            if name.startswith("panduza_drv")
         }
         logger.debug("Discovered plugins: {}", str(discovered_plugins))
 
