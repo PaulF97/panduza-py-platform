@@ -1,7 +1,7 @@
 import sys
 import serial
 
-from pza_platform import MetaDriver
+from ..meta_driver import MetaDriver
 
 class DriverStdSerial(MetaDriver):
     

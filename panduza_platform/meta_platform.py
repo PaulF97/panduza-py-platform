@@ -5,8 +5,11 @@ import argparse
 import threading
 import importlib
 from loguru import logger
-from .broker import Broker
 from sys import platform
+
+
+from .broker import Broker
+from .std_interfaces import PZA_DRIVERS_LIST as COMMON_META_DRIVERS
 
 
 class MetaPlatform:
@@ -28,7 +31,9 @@ class MetaPlatform:
     
         # Interfaces
         self.interfaces = []
-
+        
+        #
+        self.force_log = False
 
     ###########################################################################
     ###########################################################################
@@ -43,7 +48,7 @@ class MetaPlatform:
         args = parser.parse_args()
 
         # Check if logs are enabled
-        if not args.enable_logs:
+        if not args.enable_logs and self.force_log != True:
             logger.remove()
 
         # Check tree filepath value
@@ -177,7 +182,7 @@ class MetaPlatform:
             name: importlib.import_module(name)
             for finder, name, ispkg
             in pkgutil.iter_modules()
-            if name.startswith("pza_drv")
+            if name.startswith("panduza_drv")
         }
         logger.debug("Discovered plugins: {}", str(discovered_plugins))
 
@@ -190,6 +195,10 @@ class MetaPlatform:
 
             for drv in plugin_package.PZA_DRIVERS_LIST:
                 self.register_driver(drv)
+
+        #
+        for drv in COMMON_META_DRIVERS:
+            self.register_driver(drv)
 
 
     ###########################################################################
@@ -240,7 +249,10 @@ class MetaPlatform:
             # Start all the threads
             for thread in self.threads:
                 thread.start()
-                
+            
+            # Log
+            logger.info("Platform started !")
+
             # Join them all !
             for thread in self.threads:
                 thread.join()

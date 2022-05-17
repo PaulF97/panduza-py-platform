@@ -5,15 +5,23 @@ Panduza platform provides a simple way to create mqtt clients that match panduza
 ## Dependencies
 
 ```bash
-pip install paho-mqtt pyserial loguru
+pip install paho-mqtt loguru
 ```
 
-## Usage
+## Install
 
-The panduza platform instanciates interfaces described into the tree.json
+Create the tree.json in /etc/panduza/
 
 ```bash
-# To run the platform
-python3 src/pza_platform -l --tree /etc/panduza/tree.json
+./package-build.sh
+./package-monitor.sh
+
+sudo ./service-deploy.sh
+
+# To restart the service
+sudo systemctl restart panduza-py-platform.service
+
+# To monitor the platform run monitor in a separate terminal
+service-monitor.sh
 ```
 

@@ -1,7 +1,7 @@
 import time
 import json
 from loguru import logger
-from pza_platform import MetaDriver
+from ..meta_driver import MetaDriver
 
 class DriverPlatform(MetaDriver):
     
