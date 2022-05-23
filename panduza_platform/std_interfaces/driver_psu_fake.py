@@ -26,12 +26,16 @@ class DriverPsuFake(MetaDriverPsu):
         self.register_command("volts/set", self.__set_volts)
         self.register_command("amps/set", self.__set_amps)
 
-
     ###########################################################################
     ###########################################################################
 
     def on_start(self):
-        pass
+        
+        self.push_psu_amps(self.amps)
+        self.push_psu_volts(self.volts)
+        
+    ###########################################################################
+    ###########################################################################
 
     def __set_state(self, payload):
         """
@@ -41,7 +45,7 @@ class DriverPsuFake(MetaDriverPsu):
         req_enable = req["state"]
         # Update enable
         self.enable=req_enable
-        self.push_psu_enable(self.enable)
+        self.push_psu_enable(self.enable)  # TODO push_psu_enable must be changed into push_psu_state
         logger.info(f"new state :" + str(payload))
     
     ###########################################################################
