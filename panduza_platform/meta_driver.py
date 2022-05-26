@@ -152,6 +152,14 @@ class MetaDriver(metaclass=abc.ABCMeta):
     ###########################################################################
     ###########################################################################
 
+    def register_command_set(self, topic_cmds_suffix, callback):
+        """
+        """
+        self.commands[topic_cmds_suffix + "/set"] = callback
+
+    ###########################################################################
+    ###########################################################################
+
     def push_attribute(self, topic_atts_suffix, payload, qos = 0, retain = False):
         """
         """
