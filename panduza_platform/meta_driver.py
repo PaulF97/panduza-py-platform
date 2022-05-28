@@ -48,8 +48,19 @@ class MetaDriver(metaclass=abc.ABCMeta):
     ###########################################################################
     ###########################################################################
 
-    def __load_commands(self):
+    def __heartbeat_pulse(self):
+        """Send an heartbeat pulse ( on the info topic :) )
         """
+        self.mqtt_client.publish(self.base_topic + "/info", self.info, retain=False)
+
+    ###########################################################################
+    ###########################################################################
+
+    def __load_commands(self):
+        """Subscribe to all commands registered by the user with register_command()
+        
+        This function allows the user to wait for the mqtt connection start
+        before subscribing to the cmds topics.
         """
         self.log.debug(" + load commands")
         for cmd in self.commands:
@@ -57,19 +68,8 @@ class MetaDriver(metaclass=abc.ABCMeta):
             self.log.debug("      '%s' -----> [%s]", cmd, cmd_topic)
             self.mqtt_client.subscribe(cmd_topic)
 
-    ###########################################################################
-    ###########################################################################
-
-    def __alive(self):
-        """
-        """
-        tick=0
-        while self.alive:
-            if tick % 4 == 0:
-
-                self.mqtt_client.publish(self.base_topic + "/info", self.info, retain=False)
-            tick += 1
-            time.sleep(0.5)
+        # Register the common discovery topic 'pza'
+        self.mqtt_client.subscribe("pza")
 
     ###########################################################################
     ###########################################################################
@@ -87,10 +87,6 @@ class MetaDriver(metaclass=abc.ABCMeta):
 
             # Start connection
             self.mqtt_client.connect(self.broker.addr, self.broker.port)
-
-            #
-            self.alive_thread = threading.Thread(target=self.__alive)
-            self.alive_thread.start()
 
             # Start the mqtt client
             self.mqtt_client.loop_start()
@@ -123,10 +119,36 @@ class MetaDriver(metaclass=abc.ABCMeta):
     ###########################################################################
     
     def __on_message(self, client, userdata, msg):
+        """Callback to manage incomming mqtt messages
+        
+        Args:
+            client: from paho.mqtt.client
+            userdata: from paho.mqtt.client
+            msg: from paho.mqtt.client
         """
-        Callback to manage incomming mqtt messages
-        """
+        # Get the topix string
         topic_string = str(msg.topic)
+        
+        # Debug purpose
+        # logger.debug(" {} '{}' !", topic_string, msg.payload)
+        
+        # Check if it is a discovery request
+        if topic_string == "pza":
+            # If the request is for all interfaces '*'
+            if msg.payload == b'*':
+                logger.info(" there !")
+                self.__heartbeat_pulse()
+            # Else check if it is specific, there is an array in the payload
+            else:
+                # TODO
+                pass
+                # try:
+                #     specifics = self.payload_to_dict(msg.payload)
+                # except:
+                #     pass
+            return
+        
+        # Route to the cmds callback
         suffix = topic_string[self.base_topic_cmds_size:]
         if suffix in self.commands:
             self.commands[suffix](msg.payload)
@@ -145,7 +167,11 @@ class MetaDriver(metaclass=abc.ABCMeta):
     ###########################################################################
 
     def register_command(self, topic_cmds_suffix, callback):
-        """
+        """Register a cmds that will be subscribed when the mqtt connection starts
+        
+        Args:
+            topic_cmds_suffix (string): suffix of the command after the */cmds/[topic_cmds_suffix]
+            callback (function): callback that must be called when the command is triggered
         """
         self.commands[topic_cmds_suffix] = callback
 
