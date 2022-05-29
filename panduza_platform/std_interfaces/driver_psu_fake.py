@@ -7,21 +7,12 @@ class DriverPsuFake(MetaDriverPsu):
     ###########################################################################
     ###########################################################################
 
+    def __init__(self):
+        super().__init__()
+
     def config(self):
         """ From MetaDriver
         """
-
-        """ Set supported settings to all except serial port """
-        self.active_settings = self.api_settings
-        self.remove_setting('serial_port')
-
-        self.api_attributes["volts"]["max"] = 1000
-        self.api_attributes["volts"]["scale"] = 0.001
-
-        self.api_attributes["amps"]["max"] = 50
-        self.api_attributes["amps"]["scale"] = 0.01
-        
-        self.api_attributes["model_name"] = "PFPS-SN42 (Panduza Fake Power Supply)"
 
         return {
             "compatible": "psu_fake",
@@ -34,17 +25,41 @@ class DriverPsuFake(MetaDriverPsu):
     def setup(self, tree):
         """ From MetaDriver
         """
-        MetaDriverPsu.setup(self, tree)
+
+        self.supported_settings = self.api_settings.copy()
+        self.remove_setting(self.supported_settings, 'serial_port')
+
+        self.api_attributes["volts"]["max"] = 1000
+        self.api_attributes["volts"]["scale"] = 0.001
+
+        self.api_attributes["amps"]["max"] = 50
+        self.api_attributes["amps"]["scale"] = 0.01
+        
+        self.api_attributes["model_name"] = "PFPS-SN42 (Panduza Fake Power Supply)"
+
+        if "settings" in tree:
+            self.current_settings = tree["settings"].copy()
+        else:
+            self.current_settings = {}
+
         self.psu_register_command("state", self.__set_state)
         self.psu_register_command("volts", self.__set_volts)
         self.psu_register_command("amps", self.__set_amps)
         self.psu_register_command("settings", self.__set_settings)
+
+        for i in self.current_settings.copy():
+            if i not in self.supported_settings:
+                logger.warning("Driver ka3005p does not support setting " + i + " and will ignore it.")
+                self.remove_setting(self.current_settings, i)
+
+        self.api_attributes["settings"] = self.supported_settings
         pass
 
     ###########################################################################
     ###########################################################################
 
     def on_start(self):
+        super().on_start()
         pass
         
     ###########################################################################
