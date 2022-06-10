@@ -1,6 +1,6 @@
 import time
 from loguru import logger
-from ..meta_driver_io import MetaDriverReset
+from ..meta_driver_reset import MetaDriverReset
 
 class DriverResetFake(MetaDriverReset):
     
@@ -59,6 +59,7 @@ class DriverResetFake(MetaDriverReset):
     def on_start(self):
         #
         # self.push_io_value(self.value)
+        pass
 
     ###########################################################################
     ###########################################################################

@@ -2,7 +2,7 @@ import time
 from loguru import logger
 from ..meta_driver_io import MetaDriverIo
 
-class DriverFakeIo(MetaDriverIo):
+class DriverIoFake(MetaDriverIo):
     
     ###########################################################################
     ###########################################################################
@@ -11,7 +11,7 @@ class DriverFakeIo(MetaDriverIo):
         """ From MetaDriver
         """
         return {
-            "compatible": "fake_io",
+            "compatible": "io_fake",
             "info": { "type": "io", "version": "1.0" },
             "settings": {
                 "behaviour": { "type": "str", "desc": "fake behaviour of the io [static|auto_toggle]" },

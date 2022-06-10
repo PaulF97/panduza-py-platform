@@ -1,6 +1,6 @@
 import time
 from loguru import logger
-from ..meta_driver_io import MetaDriverRegister
+from ..meta_driver_register import MetaDriverRegister
 
 class DriverRegisterFake(MetaDriverRegister):
     
@@ -59,6 +59,7 @@ class DriverRegisterFake(MetaDriverRegister):
     def on_start(self):
         #
         # self.push_io_value(self.value)
+        pass
 
     ###########################################################################
     ###########################################################################
