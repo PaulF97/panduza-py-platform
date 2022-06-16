@@ -1,0 +1,29 @@
+name: Action to test the Python client
+on: [push]
+jobs:
+  Tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v2
+
+      - run: sudo apt-get update
+      - run: sudo apt-get install -y mosquitto
+
+      - run: sudo apt-get install -y python3 python3-pip
+      - run: pip install git+https://github.com/behave/behave
+      - run: pip install PyHamcrest
+      - run: pip install coverage
+      - run: pip install paho-mqtt
+      - run: export PYTHONPATH=`$pwd`
+
+      - run: pip install git+https://github.com/Panduza/panduza-py
+
+      - run: sudo mkdir -p /etc/panduza
+      - run: sudo touch /etc/panduza/tree.json
+      - run: sudo chown $USER /etc/panduza/tree.json
+
+      - run: coverage run --source='panduza_platform' -m behave
+      - run: coverage report -m
+      - run: echo "🎉 Test finished !"
+
