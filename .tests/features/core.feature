@@ -8,7 +8,6 @@ Feature: Core
         Examples: Tricky files
         | file                      |
         | io_tree.json              |
-
 #        | aliases_empty_file.json   |
 #        | aliases_empty_object.json |
 

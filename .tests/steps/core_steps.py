@@ -16,7 +16,8 @@ use_step_matcher("parse")
 
 @Step('aliases "{file}" are loaded into the core')
 def step(context, file):
-    Core.LoadAliases(json_filepath=PathToRsc(file))
+    # Core.LoadAliases(json_filepath=PathToRsc(file))
+    pass
 
 ###############################################################################
 ###############################################################################

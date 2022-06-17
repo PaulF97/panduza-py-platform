@@ -30,6 +30,8 @@ def before_all(context):
 
 def before_feature(context, feature):
 
+    # In this section we load the platform with a specific configuration for the tests of the given feature
+
     if feature.name == "Client" or feature.name == "Platform":
         treepath = PathToRsc('platform_tree.json')
         shutil.copyfile(treepath, '/etc/panduza/tree.json')

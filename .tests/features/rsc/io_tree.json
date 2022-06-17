@@ -7,18 +7,18 @@
             "interfaces": [
                 {
                     "name": "io_test",
-                    "driver": "fake_io",
+                    "driver": "io_fake",
                     "settings": {
                         
                     }
                 },
                 {
                     "name": "io_in",
-                    "driver": "fake_io"
+                    "driver": "io_fake"
                 },
                 {
                     "name": "io_out",
-                    "driver": "fake_io",
+                    "driver": "io_fake",
                     "settings": {
                         "loopback": "io_in"
                     }

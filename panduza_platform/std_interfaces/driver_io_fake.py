@@ -56,8 +56,10 @@ class DriverIoFake(MetaDriverIo):
     ###########################################################################
 
     def on_start(self):
-        #
+        """On driver start, just update initiale io attributes
+        """
         self.push_io_value(self.value)
+        self.push_io_direction(self.direction)
 
     ###########################################################################
     ###########################################################################
@@ -88,7 +90,7 @@ class DriverIoFake(MetaDriverIo):
     ###########################################################################
 
     def __value_set(self, payload):
-        """ Apply set value request
+        """Apply set value request
         """
         # Parse request
         req = self.payload_to_dict(payload)
@@ -106,7 +108,7 @@ class DriverIoFake(MetaDriverIo):
     ###########################################################################
 
     def __direction_set(self, payload):
-        """
+        """Apply set direction request
         """
         # Parse request
         req = self.payload_to_dict(payload)
