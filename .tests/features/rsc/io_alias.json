@@ -3,9 +3,9 @@
         "url": "localhost",
         "port": 1883,
         "interfaces": {
-            "io_test": "pza/test_io/fake_io/io_test",
-            "io_in": "pza/test_io/fake_io/io_in",
-            "io_out": "pza/test_io/fake_io/io_out"
+            "io_test": "pza/test_io/io_fake/io_test",
+            "io_in": "pza/test_io/io_fake/io_in",
+            "io_out": "pza/test_io/io_fake/io_out"
         }
     }
 }
