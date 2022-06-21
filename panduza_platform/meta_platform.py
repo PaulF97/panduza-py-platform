@@ -174,32 +174,29 @@ class MetaPlatform:
     ###########################################################################
 
     def register_driver_plugin_discovery(self):
+        """Function to discover python plugins related to panduza python platform
         """
-        """
-        #
+        # Discovering process
         logger.debug("Start plugin discovery")
         discovered_plugins = {
             name: importlib.import_module(name)
             for finder, name, ispkg
             in pkgutil.iter_modules()
-            if name.startswith("panduza_drv")
+            if name.startswith("panduza_class")
         }
         logger.debug("Discovered plugins: {}", str(discovered_plugins))
 
-        #
+        # Import plugin inside the platform manager
+        # Each class plugins export a PZA_DRIVERS_LIST with the list of all the managed drivers
         for plugin_name in discovered_plugins :
-
             logger.info("Load plugin: '{}'", plugin_name)
-
             plugin_package = __import__(plugin_name)
-
             for drv in plugin_package.PZA_DRIVERS_LIST:
                 self.register_driver(drv)
 
-        #
+        # Register drivers already packaged with the platform
         for drv in COMMON_META_DRIVERS:
             self.register_driver(drv)
-
 
     ###########################################################################
     ###########################################################################
