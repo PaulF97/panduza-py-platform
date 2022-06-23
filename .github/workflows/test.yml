@@ -14,10 +14,9 @@ jobs:
       - run: pip install git+https://github.com/behave/behave
       - run: pip install PyHamcrest
       - run: pip install coverage
-#      - run: pip install paho-mqtt
       - run: export PYTHONPATH=`$pwd`
 
-      - run: pip install git+https://github.com/Panduza/panduza-py@tests_with_ci
+      - run: pip install git+https://github.com/Panduza/panduza-py
 
       - run: sudo mkdir -p /etc/panduza
       - run: sudo touch /etc/panduza/tree.json

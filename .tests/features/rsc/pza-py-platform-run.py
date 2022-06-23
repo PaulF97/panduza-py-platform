@@ -1,0 +1,1 @@
+../../../deploy/pza-py-platform-run.py
