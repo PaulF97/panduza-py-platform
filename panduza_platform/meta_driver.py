@@ -157,11 +157,10 @@ class MetaDriver(metaclass=abc.ABCMeta):
     ###########################################################################
 
     def stop(self):
-        """
+        """Request to stop the driver thread
         """
         # Keep alive flag
         self.alive = False
-        self.alive_thread.join()
 
     ###########################################################################
     ###########################################################################

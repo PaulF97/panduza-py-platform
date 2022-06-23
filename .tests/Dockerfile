@@ -9,6 +9,7 @@ RUN pip install PyHamcrest
 RUN pip install coverage
 RUN pip install loguru
 RUN pip install paho-mqtt
+RUN pip install behave-html-formatter
 
 RUN mkdir -p /etc/panduza
 RUN touch /etc/panduza/tree.json

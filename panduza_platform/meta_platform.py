@@ -222,8 +222,12 @@ class MetaPlatform:
     ###########################################################################
 
     def run(self):
-        """Run the platform
+        """Starting point of the platform
         """
+        # Debug logs to structure log file
+        logger.debug("==========================================")
+        logger.debug("=         PANDUZA PY PLATFORM            =")
+        logger.debug("==========================================")
 
         try:
             # Manage args
@@ -262,8 +266,7 @@ class MetaPlatform:
     ###########################################################################
 
     def stop(self):
-        """
-        To stop the platform
+        """To stop the entire platform
         """
         # Request a stop for each driver
         for interface in self.interfaces:
