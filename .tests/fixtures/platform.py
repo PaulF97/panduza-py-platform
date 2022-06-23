@@ -1,36 +1,33 @@
 import logging
 import threading
 import subprocess
-from behave import fixture
 from steps.xdocz_helpers import PathToRsc
 
+PLATFORM_PROC=None
+PLATFORM_LOGF=None
 
 
-
-@fixture
 def start_platform(context):
-    # -- SETUP-FIXTURE PART:
+    """
+    """
+    global PLATFORM_PROC
+    global PLATFORM_LOGF
 
-    
+    # 
     platform_run_script = PathToRsc('pza-py-platform-run.py')
     logging.info(f" >>>> {platform_run_script}")
-    logfile = open('logfile', 'w')
-    subprocess.run( ["python3", platform_run_script], stdout=logfile)
+    PLATFORM_LOGF = open('platform_log.txt', 'w+')
 
 
-    # with subprocess.Popen(["python3", platform_run_script], stdout=subprocess.PIPE) as proc:
-    #     logfile.write(proc.stdout.read())
+    PLATFORM_PROC = subprocess.Popen(["python3", platform_run_script], stdout=PLATFORM_LOGF)
 
-    # proc=2
-    proc = subprocess.Popen(["python3", platform_run_script], stdout=logfile)
-    
-        # logfile.write(proc.stdout.read())
-    
-    # t.start()
-    
 
-    # -- CLEANUP-FIXTURE PART:
-    # logfile.close()
-    # logging.info(f" >>>> CLOSEDD ! !")
 
-    
+def stop_platform(context):
+    """
+    """
+    global PLATFORM_PROC
+    logging.info(f" >>>> STOOOP")
+    PLATFORM_PROC.kill()
+    PLATFORM_LOGF.close()
+

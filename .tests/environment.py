@@ -7,7 +7,7 @@ from steps.xdocz_helpers import PathToRsc
 
 from fixtures.client import client
 from fixtures.interface import interface_io
-from fixtures.platform import start_platform
+from fixtures.platform import start_platform, stop_platform
 
 
 ###############################################################################
@@ -23,6 +23,10 @@ def before_tag(context, tag):
     elif tag.startswith("fixture.platform"):
         # name = tag.replace("fixture.client.", "")
         start_platform(context)
+    elif tag.startswith("fixture.platform_close"):
+        # name = tag.replace("fixture.client.", "")
+        stop_platform(context)
+        
 
 ###############################################################################
 ###############################################################################

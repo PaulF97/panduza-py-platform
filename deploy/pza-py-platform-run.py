@@ -1,3 +1,20 @@
+import os
+ 
+# printing environment variables
+
+os.environ["COVERAGE_PROCESS_START"] = os.getcwd() + '/.coveragerc'
+
+print("COVERAGE_PROCESS_START > ", os.environ["COVERAGE_PROCESS_START"])
+
+
+
+import coverage
+cov = coverage.process_startup()
+if not cov:
+    print("FAIL COV!")
+else:
+    print("COV READY")
+
 import sys
 from loguru import logger
 from panduza_platform import MetaPlatform

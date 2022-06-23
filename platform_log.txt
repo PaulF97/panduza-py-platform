@@ -1,0 +1,24 @@
+COVERAGE_PROCESS_START >  /work/panduza-py-platform/.coveragerc
+COV READY
+DEBUG     > Start plugin discovery
+DEBUG     > Discovered plugins: {}
+INFO      > Register driver: 'platform_py'
+INFO      > Register driver: 'io_fake'
+INFO      > Register driver: 'psu_fake'
+INFO      > Register driver: 'reset_fake'
+INFO      > Register driver: 'register_fake'
+DEBUG     > load tree:{
+ "machine": "test_io",
+ "brokers": {
+  "test_broker": {
+   "addr": "localhost",
+   "port": 1883,
+   "interfaces": []
+  }
+ }
+}
+INFO      >  + test_broker (localhost:1883)
+INFO      > > platform [platform_py]
+INFO      > Platform started !
+INFO      > Interface 'platform' stopped !
+WARNING   > Platform stopped !
