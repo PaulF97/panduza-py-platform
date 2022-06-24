@@ -38,6 +38,8 @@ class DriverIoFake(MetaDriverIo):
         # Static by default => just wait for commands
         if "settings" in tree:
             settings = tree["settings"]
+
+            #
             if "behaviour" in settings:
                 target_behaviour = settings["behaviour"]
                 if target_behaviour in ["static", "auto_toggle"]:
@@ -45,7 +47,7 @@ class DriverIoFake(MetaDriverIo):
                 else:
                     logger.error("unknown behaviour '{}' fallback to 'static'", target_behaviour)
 
-            #
+            # 
             if "loopback" in settings:
                 self.loopback = self.get_interface_instance_from_name(settings["loopback"])
                 logger.info(f"loopback enabled : {self.loopback}")

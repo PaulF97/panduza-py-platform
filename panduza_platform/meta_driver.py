@@ -255,9 +255,9 @@ class MetaDriver(metaclass=abc.ABCMeta):
 
     # @abc.abstractmethod
     def on_start(self):
+        """This callback is triggered when the platform has started mqtt connections
         """
-        """
-        pass
+        pass # pragma: no cover
 
     ###########################################################################
     ###########################################################################
