@@ -1,3 +1,4 @@
+import time
 import signal
 import logging
 import subprocess
@@ -23,6 +24,9 @@ def platform_start(context, treefile):
     logging.debug(f"##### RUN PLATFORM WITH: {platform_run_script} #####")
     treefilepath = PathToRsc(treefile)
     PLATFORM_PROC = subprocess.Popen(["python3", platform_run_script, treefilepath], stdout=PLATFORM_LOGF, stderr=PLATFORM_LOGF)
+
+
+    time.sleep(3)
 
 ###############################################################################
 ###############################################################################

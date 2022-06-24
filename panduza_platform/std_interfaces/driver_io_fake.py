@@ -1,4 +1,5 @@
 import time
+import threading
 from loguru import logger
 from ..meta_driver_io import MetaDriverIo
 
@@ -31,6 +32,7 @@ class DriverIoFake(MetaDriverIo):
         self.behaviour="static"
         self.__loop = 0
         self.loopback = None
+        self.mutex = threading.Lock()
 
         # Configure the fake behaviour
         # Static by default => just wait for commands
@@ -77,14 +79,17 @@ class DriverIoFake(MetaDriverIo):
         else:
             return False
 
-
     ###########################################################################
     ###########################################################################
 
     def force_value_set(self, value):
-        # Update value
+        """To force the set from an other driver
+        """
+        self.mutex.acquire()
         self.value=value
         self.push_io_value(self.value)
+        self.mutex.release()
+        logger.info(f"force value : {self.value}")
 
     ###########################################################################
     ###########################################################################
