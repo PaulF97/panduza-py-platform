@@ -11,13 +11,10 @@ RUN pip install loguru
 RUN pip install paho-mqtt
 RUN pip install behave-html-formatter
 
-RUN mkdir -p /etc/panduza
-RUN touch /etc/panduza/tree.json
-
 ENV PYTHONPATH="/work/panduza-py-platform:/work/panduza-py"
 
 RUN mkdir /work
 
-# RUN mosquitto -d
+RUN useradd test -u 1000
 
 WORKDIR /work
