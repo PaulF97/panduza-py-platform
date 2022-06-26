@@ -19,6 +19,8 @@ jobs:
 
       - run: pip install git+https://github.com/Panduza/panduza-py
 
+      - run: export PYTHONPATH=`pwd`
+
       - run: sudo mkdir -p /etc/panduza
       - run: sudo touch /etc/panduza/tree.json
       - run: sudo chown $USER /etc/panduza/tree.json
@@ -32,8 +34,8 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: always()
         with:
-          name: test_reports
-          path: test_reports
+          name: platform_log.txt
+          path: test_reports/platform_log.txt
 
       - run: echo "🎉 Test finished !"
 
