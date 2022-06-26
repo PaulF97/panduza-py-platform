@@ -28,5 +28,11 @@ jobs:
       - run: behave -f html -o test_reports/test.html
       - run: coverage html -d test_reports/coverage
 
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: test_reports
+          path: test_reports
+
       - run: echo "🎉 Test finished !"
 
