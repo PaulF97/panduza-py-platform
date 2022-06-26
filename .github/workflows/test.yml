@@ -22,7 +22,11 @@ jobs:
       - run: sudo touch /etc/panduza/tree.json
       - run: sudo chown $USER /etc/panduza/tree.json
 
-      - run: coverage run --source='panduza_platform' -m behave
-      - run: coverage report -m
+      - run: behave
+      - run: coverage report
+
+      - run: behave -f html -o test_reports/test.html
+      - run: coverage html -d test_reports/coverage
+
       - run: echo "🎉 Test finished !"
 

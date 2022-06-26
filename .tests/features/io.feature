@@ -1,6 +1,7 @@
 @action.platform_start.io_tree.json
 Feature: Io
 
+# -----------------------------------------------------------------------------
 
     @fixture.interface.io.test
     Scenario: Io direction must be configurable
@@ -11,6 +12,7 @@ Feature: Io
         When io interface "test" direction is set to "in"
         Then io interface "test" direction is "in"
 
+# -----------------------------------------------------------------------------
 
     @fixture.interface.io.test
     Scenario: Io value must be configurable
@@ -21,6 +23,7 @@ Feature: Io
         When io interface "test" value is set to "0"
         Then io interface "test" value is "0"
 
+# -----------------------------------------------------------------------------
 
     @fixture.interface.io.in
     @fixture.interface.io.out
@@ -35,5 +38,6 @@ Feature: Io
         When io interface "out" value is set to "0"
         Then io interface "in" value is "0"
 
+# -----------------------------------------------------------------------------
 
 @action.platform_close
