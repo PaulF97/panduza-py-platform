@@ -27,12 +27,15 @@ jobs:
         run: behave
         env:
           PYTHONPATH: "."
-          COVERAGE_PROCESS_START: "./.coveragerc"
+        
+      # - run: coverage report
 
-      - run: coverage report
-
-      - run: behave -f html -o test_reports/test.html
-      - run: coverage html -d test_reports/coverage
+      - name: Execute tests
+        run: behave -f html -o test_reports/test.html
+        env:
+          PYTHONPATH: "."
+        
+      # - run: coverage html -d test_reports/coverage
 
       - uses: actions/upload-artifact@v3
         if: always()
