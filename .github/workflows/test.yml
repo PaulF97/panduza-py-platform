@@ -27,6 +27,7 @@ jobs:
         run: behave
         env:
           PYTHONPATH: "."
+          COVERAGE_PROCESS_START: "./.coveragerc"
 
       - run: coverage report
 
