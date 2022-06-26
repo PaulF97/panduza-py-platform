@@ -16,6 +16,7 @@ jobs:
       - run: pip install PyHamcrest
       - run: pip install coverage
       - run: pip install loguru
+      - run: pip install behave-html-formatter
 
       - run: pip install git+https://github.com/Panduza/panduza-py
 
