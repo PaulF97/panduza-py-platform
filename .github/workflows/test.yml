@@ -1,5 +1,6 @@
 name: Action to test the Python client
 on: [push]
+
 jobs:
   Tests:
     runs-on: ubuntu-latest
@@ -16,16 +17,17 @@ jobs:
       - run: pip install coverage
       - run: pip install loguru
 
-      - run: export PYTHONPATH=`pwd`
-      - run: echo "PYTHONPATH=$PYTHONPATH"
-
       - run: pip install git+https://github.com/Panduza/panduza-py
 
       - run: sudo mkdir -p /etc/panduza
       - run: sudo touch /etc/panduza/tree.json
       - run: sudo chown $USER /etc/panduza/tree.json
 
-      - run: behave
+      - name: Execute tests
+        run: behave
+        env:
+          PYTHONPATH: "."
+
       - run: coverage report
 
       - run: behave -f html -o test_reports/test.html
