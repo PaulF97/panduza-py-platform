@@ -15,11 +15,11 @@ jobs:
       - run: pip install PyHamcrest
       - run: pip install coverage
       - run: pip install loguru
-      - run: export PYTHONPATH=`$pwd`
-
-      - run: pip install git+https://github.com/Panduza/panduza-py
 
       - run: export PYTHONPATH=`pwd`
+      - run: echo "PYTHONPATH=$PYTHONPATH"
+
+      - run: pip install git+https://github.com/Panduza/panduza-py
 
       - run: sudo mkdir -p /etc/panduza
       - run: sudo touch /etc/panduza/tree.json
@@ -34,8 +34,8 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: always()
         with:
-          name: platform_log.txt
-          path: test_reports/platform_log.txt
+          name: test_reports
+          path: test_reports
 
       - run: echo "🎉 Test finished !"
 
