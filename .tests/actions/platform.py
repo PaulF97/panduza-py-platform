@@ -35,6 +35,7 @@ def platform_stop(context):
     """Stop the platform
     """
     global PLATFORM_PROC
+    global PLATFORM_LOGF
     logging.debug(f"STOPING PLATFORM...")
     if PLATFORM_PROC:
         PLATFORM_PROC.send_signal(signal.SIGINT)
