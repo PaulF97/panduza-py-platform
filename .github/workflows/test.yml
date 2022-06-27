@@ -23,6 +23,8 @@ jobs:
 
       - run: pip install git+https://github.com/Panduza/panduza-py
 
+      - run: mosquitto -d
+
       - name: Execute tests
         run: behave
         env:
