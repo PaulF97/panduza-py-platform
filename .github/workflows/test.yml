@@ -9,6 +9,8 @@ jobs:
       - name: Git checkout
         uses: actions/checkout@v2
 
+      - run: echo "${GITHUB_WORKSPACE}"
+
       - run: apt-get update
       - run: apt-get install -y mosquitto git
 
@@ -21,14 +23,14 @@ jobs:
 
       - run: pip install git+https://github.com/Panduza/panduza-py
 
-
       - name: Execute tests
         run: behave
         env:
           PYTHONPATH: "."
           COVERAGE_PROCESS_START: "${GITHUB_WORKSPACE}/.coveragerc"
-          # COVERAGE_PROCESS_START: "/home/runner/work/panduza-py-platform/panduza-py-platform/.coveragerc"
- 
+
+      - run: echo "`ls -la ${GITHUB_WORKSPACE}`"
+
       - run: coverage report
 
       - name: Execute tests
