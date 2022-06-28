@@ -1,5 +1,6 @@
 import os
 import sys
+import coverage
  
 # debug
 print("REQUEST TO START PLATFORM IN TEST MODE WITH TREE (", sys.argv[1], ")")
@@ -7,12 +8,14 @@ print("REQUEST TO START PLATFORM IN TEST MODE WITH TREE (", sys.argv[1], ")")
 # Covergae
 # os.environ["COVERAGE_PROCESS_START"] = os.getcwd() + '/.coveragerc'
 print("COVERAGE_PROCESS_START > ", os.environ["COVERAGE_PROCESS_START"])
-import coverage
-cov = coverage.process_startup()
-if not cov:
-    print("COVERAGE FAIL !")
-else:
-    print("COVERAGE READY !")
+
+
+if os.environ["COVERAGE_PROCESS_START"] != "NO":
+    cov = coverage.process_startup()
+    if not cov:
+        print("COVERAGE FAIL !")
+    else:
+        print("COVERAGE READY !")
 
 
 # Start the platform
