@@ -4,9 +4,8 @@ import sys
 # debug
 print("REQUEST TO START PLATFORM IN TEST MODE WITH TREE (", sys.argv[1], ")")
 
-
 # Covergae
-os.environ["COVERAGE_PROCESS_START"] = os.getcwd() + '/.coveragerc'
+# os.environ["COVERAGE_PROCESS_START"] = os.getcwd() + '/.coveragerc'
 print("COVERAGE_PROCESS_START > ", os.environ["COVERAGE_PROCESS_START"])
 import coverage
 cov = coverage.process_startup()
