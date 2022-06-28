@@ -1,8 +1,9 @@
 import time
+import threading
 from loguru import logger
 from ..meta_driver_io import MetaDriverIo
 
-class DriverFakeIo(MetaDriverIo):
+class DriverIoFake(MetaDriverIo):
     
     ###########################################################################
     ###########################################################################
@@ -11,7 +12,7 @@ class DriverFakeIo(MetaDriverIo):
         """ From MetaDriver
         """
         return {
-            "compatible": "fake_io",
+            "compatible": "io_fake",
             "info": { "type": "io", "version": "1.0" },
             "settings": {
                 "behaviour": { "type": "str", "desc": "fake behaviour of the io [static|auto_toggle]" },
@@ -31,11 +32,14 @@ class DriverFakeIo(MetaDriverIo):
         self.behaviour="static"
         self.__loop = 0
         self.loopback = None
+        self.mutex = threading.Lock()
 
         # Configure the fake behaviour
         # Static by default => just wait for commands
         if "settings" in tree:
             settings = tree["settings"]
+
+            #
             if "behaviour" in settings:
                 target_behaviour = settings["behaviour"]
                 if target_behaviour in ["static", "auto_toggle"]:
@@ -43,7 +47,7 @@ class DriverFakeIo(MetaDriverIo):
                 else:
                     logger.error("unknown behaviour '{}' fallback to 'static'", target_behaviour)
 
-            #
+            # 
             if "loopback" in settings:
                 self.loopback = self.get_interface_instance_from_name(settings["loopback"])
                 logger.info(f"loopback enabled : {self.loopback}")
@@ -56,8 +60,10 @@ class DriverFakeIo(MetaDriverIo):
     ###########################################################################
 
     def on_start(self):
-        #
+        """On driver start, just update initiale io attributes
+        """
         self.push_io_value(self.value)
+        self.push_io_direction(self.direction)
 
     ###########################################################################
     ###########################################################################
@@ -75,20 +81,23 @@ class DriverFakeIo(MetaDriverIo):
         else:
             return False
 
-
     ###########################################################################
     ###########################################################################
 
     def force_value_set(self, value):
-        # Update value
+        """To force the set from an other driver
+        """
+        self.mutex.acquire()
         self.value=value
         self.push_io_value(self.value)
+        self.mutex.release()
+        logger.info(f"force value : {self.value}")
 
     ###########################################################################
     ###########################################################################
 
     def __value_set(self, payload):
-        """ Apply set value request
+        """Apply set value request
         """
         # Parse request
         req = self.payload_to_dict(payload)
@@ -106,7 +115,7 @@ class DriverFakeIo(MetaDriverIo):
     ###########################################################################
 
     def __direction_set(self, payload):
-        """
+        """Apply set direction request
         """
         # Parse request
         req = self.payload_to_dict(payload)

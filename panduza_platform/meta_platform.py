@@ -22,6 +22,10 @@ class MetaPlatform:
     def __init__(self):
         """ Constructor
         """
+        # Debug logs to structure log file
+        logger.debug("==========================================")
+        logger.debug("=         PANDUZA PY PLATFORM            =")
+        logger.debug("==========================================")
 
         # Threads
         self.threads = []
@@ -32,13 +36,25 @@ class MetaPlatform:
         # Interfaces
         self.interfaces = []
         
+        # Tree that must be loaded at startup
+        self.tree_filepath = None
+
         #
         self.force_log = False
 
     ###########################################################################
     ###########################################################################
 
-    def __parse_args(self):
+    def load_tree_overide(self, tree_filepath):
+        """platform will use the given tree filepath
+        """
+        self.tree_filepath = tree_filepath
+        logger.debug(f"force tree:{self.tree_filepath}")
+        
+    ###########################################################################
+    ###########################################################################
+
+    def parse_args(self):
         """
         """
         # Manage arguments
@@ -52,17 +68,7 @@ class MetaPlatform:
             logger.remove()
 
         # Check tree filepath value
-        tree_filepath = args.tree
-        if not args.tree:            
-            # Set the default tree path on linux
-            if platform == "linux" or platform == "linux2":
-                tree_filepath = "/etc/panduza/tree.json"
-
-        # Load tree
-        self.tree = {}
-        with open(tree_filepath) as tree_file:
-            self.tree = json.load(tree_file)
-
+        self.tree_filepath = args.tree
 
     ###########################################################################
     ###########################################################################
@@ -174,32 +180,29 @@ class MetaPlatform:
     ###########################################################################
 
     def register_driver_plugin_discovery(self):
+        """Function to discover python plugins related to panduza python platform
         """
-        """
-        #
+        # Discovering process
         logger.debug("Start plugin discovery")
         discovered_plugins = {
             name: importlib.import_module(name)
             for finder, name, ispkg
             in pkgutil.iter_modules()
-            if name.startswith("panduza_drv")
+            if name.startswith("panduza_class")
         }
         logger.debug("Discovered plugins: {}", str(discovered_plugins))
 
-        #
+        # Import plugin inside the platform manager
+        # Each class plugins export a PZA_DRIVERS_LIST with the list of all the managed drivers
         for plugin_name in discovered_plugins :
-
             logger.info("Load plugin: '{}'", plugin_name)
-
             plugin_package = __import__(plugin_name)
-
             for drv in plugin_package.PZA_DRIVERS_LIST:
                 self.register_driver(drv)
 
-        #
+        # Register drivers already packaged with the platform
         for drv in COMMON_META_DRIVERS:
             self.register_driver(drv)
-
 
     ###########################################################################
     ###########################################################################
@@ -225,12 +228,20 @@ class MetaPlatform:
     ###########################################################################
 
     def run(self):
-        """Run the platform
+        """Starting point of the platform
         """
 
+        # Load a default tree path if not provided
+        if not self.tree_filepath:
+            # Set the default tree path on linux
+            if platform == "linux" or platform == "linux2":
+                self.tree_filepath = "/etc/panduza/tree.json"
+
         try:
-            # Manage args
-            self.__parse_args()
+            # Load tree
+            self.tree = {}
+            with open(self.tree_filepath) as tree_file:
+                self.tree = json.load(tree_file)
 
             # Parse configs
             logger.debug("load tree:{}", json.dumps(self.tree, indent=1))
@@ -265,8 +276,7 @@ class MetaPlatform:
     ###########################################################################
 
     def stop(self):
-        """
-        To stop the platform
+        """To stop the entire platform
         """
         # Request a stop for each driver
         for interface in self.interfaces:

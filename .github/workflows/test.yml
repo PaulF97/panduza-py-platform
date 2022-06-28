@@ -1,0 +1,53 @@
+name: Action to test the Python client
+on: [push]
+
+jobs:
+  Tests:
+    runs-on: ubuntu-latest
+    container: ubuntu:20.04
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v2
+
+      - run: echo "${GITHUB_WORKSPACE}"
+
+      - run: apt-get update
+      - run: apt-get install -y mosquitto git
+
+      - run: apt-get install -y python3 python3-pip
+      - run: pip install git+https://github.com/behave/behave
+      - run: pip install PyHamcrest
+      - run: pip install coverage
+      - run: pip install loguru
+      - run: pip install behave-html-formatter
+
+      - run: pip install git+https://github.com/Panduza/panduza-py
+
+      - run: mosquitto -d
+
+      - name: Execute tests
+        run: behave
+        env:
+          PYTHONPATH: "."
+          COVERAGE_PROCESS_START: "/__w/panduza-py-platform/panduza-py-platform/.coveragerc"
+
+      - run: echo "`ls -la ${GITHUB_WORKSPACE}`"
+
+      - run: coverage report
+
+      - name: Execute tests
+        run: behave -f html -o test_reports/test.html
+        env:
+          PYTHONPATH: "."
+          COVERAGE_PROCESS_START: "/__w/panduza-py-platform/panduza-py-platform/.coveragerc"
+        
+      - run: coverage html -d test_reports/coverage
+
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: test_reports
+          path: test_reports
+
+      - run: echo "🎉 Test finished !"
+

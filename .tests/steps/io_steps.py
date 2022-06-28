@@ -44,5 +44,7 @@ def step(context, io_name, value):
 
 @Then('io interface "{io_name}" value is "{value}"')
 def step(context, io_name, value):
+    # wait for the platform loopback
+    time.sleep(1)
     assert_that(context.interfaces["io"][io_name].value.get(), equal_to(int(value)))
 
