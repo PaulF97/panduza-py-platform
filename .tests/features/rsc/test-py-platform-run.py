@@ -24,7 +24,7 @@ from loguru import logger
 from panduza_platform import MetaPlatform
 
 logger.remove()
-logger.add(sys.stdout, format="[{time}] {level: <10}> {message}", level="DEBUG")
+logger.add(sys.stdout, format="{level: <10}|{extra[driver_name]: <10}> {message}", level="DEBUG")
 
 srv = MetaPlatform()
 srv.force_log = True
