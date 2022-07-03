@@ -2,11 +2,10 @@ import abc
 import sys
 import time
 import json
-import loguru
 import threading
 import paho.mqtt.client as mqtt
-
 from loguru import logger
+
 
 class MetaDriver(metaclass=abc.ABCMeta):
 
@@ -34,7 +33,7 @@ class MetaDriver(metaclass=abc.ABCMeta):
         self.broker = broker
         self.tree = tree
         self.name = self.tree["name"]
-        self.log = loguru.bind(driver_name=self.name)
+        self.log = logger.bind(driver_name=self.name)
         self.info = json.dumps( self.config()["info"] )
         self.commands = {}
         self.base_topic = "pza/" + machine + "/" + self.tree["driver"] + "/" + self.name

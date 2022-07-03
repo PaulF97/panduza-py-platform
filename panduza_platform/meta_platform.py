@@ -13,7 +13,7 @@ from .std_interfaces import PZA_DRIVERS_LIST as COMMON_META_DRIVERS
 
 # Default set for logger extra 'driver_name'
 #
-logger.configure(extra={"driver_name":"system"})
+logger.configure(extra={"driver_name":"+++"})
 
 class MetaPlatform:
     """ Main class to manage the platform
