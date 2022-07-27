@@ -1,6 +1,9 @@
 name: Action to test the Python client
 on: [push]
 
+env:
+  PANDUZA_PY_BRANCH: acceptance_integration
+
 jobs:
   Tests:
     runs-on: ubuntu-latest
@@ -21,33 +24,40 @@ jobs:
       - run: pip install loguru
       - run: pip install behave-html-formatter
 
-      - run: pip install git+https://github.com/Panduza/panduza-py
+      - run: git clone --branch  $PANDUZA_PY_BRANCH https://github.com/Panduza/panduza-py
+      - run: pip install git+https://github.com/Panduza/panduza-py@$PANDUZA_PY_BRANCH
 
       - run: mosquitto -d
 
       - name: Execute tests
         run: behave
+        working-directory: panduza-py
         env:
-          PYTHONPATH: "."
+          PYTHONPATH: ".."
           COVERAGE_PROCESS_START: "/__w/panduza-py-platform/panduza-py-platform/.coveragerc"
 
       - run: echo "`ls -la ${GITHUB_WORKSPACE}`"
 
-      - run: coverage report
+      - name: Coverage in shell
+        run: coverage report
+        working-directory: panduza-py
 
       - name: Execute tests
-        run: behave -f html -o test_reports/test.html
+        run: behave -f html -o acceptance/report/test.html
+        working-directory: panduza-py
         env:
-          PYTHONPATH: "."
+          PYTHONPATH: ".."
           COVERAGE_PROCESS_START: "/__w/panduza-py-platform/panduza-py-platform/.coveragerc"
-        
-      - run: coverage html -d test_reports/coverage
+      
+      - name: Coverage
+        run: coverage html -d acceptance/report/coverage
+        working-directory: panduza-py
 
       - uses: actions/upload-artifact@v3
         if: always()
         with:
-          name: test_reports
-          path: test_reports
+          name: acceptance-report
+          path: panduza-py/acceptance/report
 
       - run: echo "🎉 Test finished !"
 
