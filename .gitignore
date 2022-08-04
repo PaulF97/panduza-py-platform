@@ -1,7 +1,7 @@
+documentation
 
 test_reports/*
 !test_reports/.gitkeep
-
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

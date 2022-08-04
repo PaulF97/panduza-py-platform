@@ -64,7 +64,7 @@ class MetaDriver(metaclass=abc.ABCMeta):
         self.log.debug(" + load commands")
         for cmd in self.commands:
             cmd_topic = self.base_topic_cmds + cmd
-            self.log.debug("      '%s' -----> [%s]", cmd, cmd_topic)
+            self.log.debug(f"      '{cmd}' -----> [{cmd_topic}]")
             self.mqtt_client.subscribe(cmd_topic)
 
         # Register the common discovery topic 'pza'
