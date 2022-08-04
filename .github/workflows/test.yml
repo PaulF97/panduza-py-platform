@@ -23,6 +23,7 @@ jobs:
       - run: pip install coverage
       - run: pip install loguru
       - run: pip install behave-html-formatter
+      - run: pip install python-magic
 
       - run: git clone --branch  $PANDUZA_PY_BRANCH https://github.com/Panduza/panduza-py
       - run: pip install git+https://github.com/Panduza/panduza-py@$PANDUZA_PY_BRANCH
