@@ -1,0 +1,25 @@
+version: '3'  
+ 
+services: 
+
+
+  mosquitto:
+    image: eclipse-mosquitto
+    user: 1001:1001
+    ports:
+      - 1883:1883
+      - 9001:9001
+    volumes:
+      - ./mosquitto-data/mosquitto.conf:/mosquitto/config/mosquitto.conf 
+    
+
+  panduza-platform: 
+    build: .
+    user: 1001:1001
+    ports:
+      - 1883:1883
+    volumes:
+      - ../..:/workdir/panduza-py-platform
+      - ./panduza-data/tree.json:/etc/panduza/tree.json
+    command: python3 /workdir/panduza-py-platform/deploy/pza-py-platform-run.py
+
