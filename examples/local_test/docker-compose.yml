@@ -16,8 +16,7 @@ services:
   panduza-platform: 
     build: .
     user: 1001:1001
-    ports:
-      - 1883:1883
+    network_mode: host
     volumes:
       - ../..:/workdir/panduza-py-platform
       - ./panduza-data/tree.json:/etc/panduza/tree.json

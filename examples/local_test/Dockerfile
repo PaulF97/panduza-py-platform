@@ -9,6 +9,6 @@ RUN pip install python-magic
 RUN pip install behave-html-formatter
 
 RUN mkdir /etc/panduza
-ENV PYTHONPATH="/workdir/panduza-py-platform"
+ENV PYTHONPATH="/panduza-py-platform"
 
 WORKDIR /workdir
