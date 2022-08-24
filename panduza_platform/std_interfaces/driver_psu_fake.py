@@ -66,15 +66,19 @@ class DriverPsuFake(MetaDriverPsu):
     ###########################################################################
 
     def __set_state(self, payload):
+        """ @brief Handler for the command 'state/set'
         """
-        """
+        # Debug
+        self.log.debug(f"command 'state/set' received {payload}")
+        
         # Parse request
         req = self.payload_to_dict(payload)
         req_state = req["state"]
+        
         # Update state
         self.state=req_state
         self.psu_push_attribute("state", self.state)
-        logger.info(f"new state :" + str(payload))
+        self.log.info(f"new state :" + str(payload))
 
     
     ###########################################################################
@@ -88,7 +92,7 @@ class DriverPsuFake(MetaDriverPsu):
         # Update state
         self.api_attributes["volts"]["value"] = req["volts"]
         self.psu_push_attribute("volts", self.api_attributes["volts"])
-        logger.info(f"new volts :" + str(payload))
+        self.log.info(f"new volts :" + str(payload))
 
     ###########################################################################
     ###########################################################################
@@ -101,7 +105,7 @@ class DriverPsuFake(MetaDriverPsu):
         # Update state
         self.api_attributes["amps"]["value"] = req["amps"]
         self.psu_push_attribute("amps", self.api_attributes["amps"])
-        logger.info(f"new amps:" + str(payload))
+        self.log.info(f"new amps:" + str(payload))
 
     ###########################################################################
     ###########################################################################
@@ -115,7 +119,7 @@ class DriverPsuFake(MetaDriverPsu):
         # Update state
         self.settings = req_settings
         self.psu_push_attribute("settings", self.settings)
-        logger.info(f"new settings:" + str(payload))
+        self.log.info(f"new settings:" + str(payload))
 
     ###########################################################################
     ###########################################################################

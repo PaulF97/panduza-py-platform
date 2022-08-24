@@ -129,13 +129,13 @@ class MetaDriver(metaclass=abc.ABCMeta):
         topic_string = str(msg.topic)
         
         # Debug purpose
-        # logger.debug(" {} '{}' !", topic_string, msg.payload)
+        self.log.debug("NEW MSG > topic={} payload='{}' !", topic_string, msg.payload)
         
         # Check if it is a discovery request
         if topic_string == "pza":
             # If the request is for all interfaces '*'
             if msg.payload == b'*':
-                logger.info(" there !")
+                self.log.info("scan request received !")
                 self.__heartbeat_pulse()
             # Else check if it is specific, there is an array in the payload
             else:
