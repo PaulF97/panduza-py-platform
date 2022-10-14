@@ -185,6 +185,10 @@ class MetaPlatform:
     def register_driver_plugin_discovery(self):
         """Function to discover python plugins related to panduza python platform
         """
+        #
+        # logger.debug(f"PYPATH: {sys.path}")
+        # help('modules')
+
         # Discovering process
         logger.debug("Start plugin discovery")
         discovered_plugins = {
