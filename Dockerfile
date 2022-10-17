@@ -1,5 +1,7 @@
 FROM ubuntu:22.04
 
+LABEL org.opencontainers.image.source https://github.com/Panduza/panduza-py-platform
+
 # Install Packages
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive TZ=Europe/Paris \
     apt-get -y install \
@@ -18,6 +20,7 @@ RUN pip install python-magic
 RUN pip install python-statemachine
 RUN pip install behave-html-formatter
 RUN python3 -h pip install 'Panduza @ https://github.com/Panduza/picoha-io.git'
+
 
 #
 RUN mkdir /etc/panduza
