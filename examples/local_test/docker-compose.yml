@@ -14,7 +14,7 @@ services:
     
 
   panduza-platform: 
-    build: ghcr.io/panduza/panduza-py-platform:latest
+    image: ghcr.io/panduza/panduza-py-platform:latest
     user: 1001:1001
     network_mode: host
     volumes:
