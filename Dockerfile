@@ -25,13 +25,10 @@ RUN pip install python-statemachine
 RUN pip install behave-html-formatter
 
 #repos clone
-#RUN echo
-RUN pip install git+https://github.com/Panduza/picoha-io.git
-RUN pip install git+https://github.com/paulhfisher/panduza-py-class-power-supply.git
 
-#RUN if [ -z "$TAG" ] ; then pip install git+https://github.com/paulhfisher/panduza-py-class-power-supply.git ; else git clone --branch $TAG https://github.com/paulhfisher/panduza-py-class-power-supply.git  ; fi
- 
-#RUN pip install git+https://github.com/Panduza/panduza-py-class-power-supply/archive/refs/tags/v1.0.zip
+#RUN echo
+RUN pip install git+https://github.com/Panduza/picoha-io.git 
+RUN pip install git+https://github.com/Panduza/panduza-py-class-power-supply.git@v1.0
 
 #
 RUN mkdir /etc/panduza
