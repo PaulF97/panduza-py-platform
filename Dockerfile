@@ -30,6 +30,7 @@ RUN pip install behave-html-formatter
 RUN pip install git+https://github.com/Panduza/picoha-io.git 
 RUN pip install git+https://github.com/Panduza/panduza-py-class-power-supply.git@v1.0
 
+
 #
 RUN mkdir /etc/panduza
 
